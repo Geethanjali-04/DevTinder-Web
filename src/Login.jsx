@@ -1,12 +1,13 @@
 import React from 'react'
 import { useState } from 'react'
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { addUser, removeUser } from './utils/userSlice';
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
+    const dispatch = useDispatch();
     const handleEmailChange = (e) => {
-        console.log(`email${e}`);
         setEmail(e.target.value);
     }
 
@@ -19,8 +20,10 @@ const Login = () => {
         const res = await axios.post('http://localhost:3000/login', {
             "emailId": email,
             "password": password
-        });
-        console.log("data: " + res);
+        }, {withCredentials: true});
+
+        console.log(res.data);
+        dispatch(addUser(res.data.data));
       } catch(err)
       {
         console.log(`Error ${err}`);
@@ -36,13 +39,13 @@ const Login = () => {
                     <div className="label">
                         <span className="label-text">Email Id</span>
                     </div>
-                    <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" onChange={ handleEmailChange } value = {email}/>
+                    <input type="text" placeholder="Enter Your Email" className="input input-bordered w-full max-w-xs" onChange={ handleEmailChange } value = {email}/>
                 </label>
                 <label className="form-control w-full max-w-xs">
                     <div className="label">
                         <span className="label-text">Password</span>
                     </div>
-                    <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" onChange={ handlePasswordChange } value = {password} />
+                    <input type="text" placeholder="Enter Your Password" className="input input-bordered w-full max-w-xs" onChange={ handlePasswordChange } value = {password} />
                 </label>
                 <div className="card-actions justify-center">
                     <button className="btn btn-primary" onClick = {handleLogin}>Login</button>

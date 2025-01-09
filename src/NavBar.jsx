@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 const NavBar = () => {
     return ( <div className="navbar bg-base-200">
         <div className="flex-1">
